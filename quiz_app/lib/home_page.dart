@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   void _proximaPergunta() {
     setState(() {
-      //controladorQuiz.proximaPergunta();
+      controladorQuiz.acao();
     });
   }
 
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quiz App"),
+        title: Text("Aprendendo TI com a WOLF"),
       ),
       body: Container(
         padding: EdgeInsets.all(50),
@@ -39,6 +39,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                  "SEUS ACERTOS SÃO: ${controladorQuiz.totalAcertos} DE ${controladorQuiz.quantidadeTotalQuestoes}"),
               Text(
                   "Questão ${controladorQuiz.indiceQuestaoAtual}/${controladorQuiz.quantidadeTotalQuestoes}"),
               Divider(thickness: 5),
@@ -52,12 +54,18 @@ class _HomePageState extends State<HomePage> {
                     acao: _selecionarAlternativa,
                     selecionada:
                         controladorQuiz.alternativaSelecionada == alternativa,
+                    acertou: controladorQuiz.acertouResposta,
+                    respondeu: controladorQuiz.respondeuPergunta,
                   );
                 },
               ),
-              controladorQuiz.selecionouAlternativa
+              controladorQuiz.status != StatusQuiz.AGUARDAR
                   ? BotaoAcao(
-                      texto: "Próxima pergunta",
+                      texto: controladorQuiz.selecionouAlternativa
+                          ? "Sua Avaliação:"
+                          : controladorQuiz.selecionouAlternativa
+                              ? "Responder"
+                              : "Next Question",
                       acao: _proximaPergunta,
                     )
                   : SizedBox(
